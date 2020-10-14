@@ -1,0 +1,56 @@
+@charset "utf-8";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#wrapper {
+  min-width: 320px;
+  min-height: 100vh;
+  background: #ddf;
+  font-size: 100%;
+  font-family: sans-serif;
+}
+
+header {
+  padding: 0.5em;
+  background: #15a;
+  color: #fff;
+  font-size: 200%;
+  font-weight: bold;
+  text-align: center;
+}
+
+#content {
+  min-width: 320px;
+  margin: 2em 0;
+  background: #fff;
+}
+
+main {
+  padding: 0.2em;
+}
+
+main h1 {
+  margin-top: 0;
+  margin-bottom: 1em;
+  padding: 0.5em 0.4em;
+  border-bottom: #189 2px solid;
+  border-left: #189 20px solid;
+  line-height: 1.5em;
+  background: #eee;
+  color: #333;
+  font-size: 140%;
+  font-weight: bold;
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+  #content {
+    width: 100%;
+    max-width: 960px;
+    margin: 2em auto;
+  }
+}
