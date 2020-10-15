@@ -42,6 +42,6 @@ python manage.py runserver 0:8000
 
 ウェブでは基本的にリクエストをまたいで変数の値を共有することはできない．しかし，セッションを使うとユーザーの入力などを保存しておくことができる．
 
-- `request.session.image_path`: 入力画像の保存先
-- `request.session.edge_positions`: マスク領域の頂点の座標
-- `request.session.output_path`: 出力画像の保存先
+- `request.session['image_path']`: 入力画像の保存先
+- `request.session['edge_positions']`: マスク領域の頂点の座標
+- `request.session['output_path']`: 出力画像の保存先
