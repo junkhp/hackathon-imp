@@ -1,18 +1,28 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import generic
-from django.urls import reverse_lazy
 
 from .forms import PhotoForm
 
-class IndexPageView(generic.CreateView):
+
+def IndexPageView(request):
     template_name = 'rm_mask/index.html'
-    form_class = PhotoForm
-    success_url = reverse_lazy('index')
 
-    def form_valid(self, form):
-        form.save()
-        print('image path: ' + form.instance.image.name)
-        return super().form_valid(form)
+    if request.method == 'GET':
+        params = {
+          'form': PhotoForm(),
+          'message': '',
+        }
+        return render(request, template_name, params)
 
-    def form_invalid(self, form):
-        return super().form_invalid(form)
+    if request.method == 'POST':
+        form = PhotoForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            request.session['image_path'] = form.instance.image.name
+            return redirect('index')
+        else:
+            params = {
+              'form': PhotoForm(),
+              'message': 'Error!!',
+            }
+            return render(request, template_name, params)
