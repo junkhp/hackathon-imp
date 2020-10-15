@@ -46,6 +46,13 @@ main h1 {
   font-weight: bold;
 }
 
+.section-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 10px;
+  text-align: center;
+}
+
 /* Desktop */
 @media (min-width: 768px) {
   #content {
