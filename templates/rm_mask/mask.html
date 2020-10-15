@@ -1,0 +1,175 @@
+{% extends 'rm_mask/base.html' %}
+
+{% load static %}
+
+{% block title %}
+マスク部分の指定
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/mask.css' %}">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+<script>
+$(window).load(() => {
+
+  const numHandles = 8;
+  const handlePositions = [
+    { x: {{ edge_positions.0.x }}, y: {{ edge_positions.0.y }} },
+    { x: {{ edge_positions.1.x }}, y: {{ edge_positions.1.y }} },
+    { x: {{ edge_positions.2.x }}, y: {{ edge_positions.2.y }} },
+    { x: {{ edge_positions.3.x }}, y: {{ edge_positions.3.y }} },
+    { x: {{ edge_positions.4.x }}, y: {{ edge_positions.4.y }} },
+    { x: {{ edge_positions.5.x }}, y: {{ edge_positions.5.y }} },
+    { x: {{ edge_positions.6.x }}, y: {{ edge_positions.6.y }} },
+    { x: {{ edge_positions.7.x }}, y: {{ edge_positions.7.y }} },
+  ];
+
+  const setDimensions = () => {
+    const currentWidth = $('#canvas-container').width();
+    const currentHeight = currentWidth;
+    $('#canvas-container').height(currentHeight);
+
+    $('#face-image').width(currentWidth);
+    $('#face-image').height(currentHeight);
+
+    const ratio = window.devicePixelRatio;
+    $('#canvas').attr('width', currentWidth * ratio);
+    $('#canvas').attr('height', currentHeight * ratio);
+    $('#canvas').width(currentWidth);
+    $('#canvas').height(currentHeight);
+    const ctx = $('#canvas')[0].getContext('2d');
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+
+    for (let i = 0; i < numHandles; i++) {
+      const size = 30;
+      const left = currentWidth * handlePositions[i].x - size / 2;
+      const top = currentHeight * handlePositions[i].y - size / 2;
+      $('#draggable-point' + i).css({left: left, top: top});
+    }
+  }
+
+  const drawAnnotation = () => {
+    const canvasWidth = $('#canvas').width();
+    const canvasHeight = $('#canvas').height();
+    const ctx = $('#canvas')[0].getContext('2d');
+
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    ctx.beginPath();
+    ctx.moveTo(handlePositions[0].x * canvasWidth, handlePositions[0].y * canvasHeight);
+    for (let i = 1; i < numHandles; i++) {
+      ctx.lineTo(handlePositions[i].x * canvasWidth, handlePositions[i].y * canvasHeight);
+    }
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(0, 0, 255, 0.2)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgb(0, 0, 255)';
+    ctx.stroke();
+
+    for (let i = 0; i < numHandles; i++) {
+      const cx = handlePositions[i].x * canvasWidth;
+      const cy = handlePositions[i].y * canvasHeight;
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, 10, 0, 2 * Math.PI, false);
+      ctx.fillStyle = 'rgb(255, 255, 255)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgb(0, 0, 0)';
+      ctx.stroke();
+    }
+  }
+
+  const showHandlePositions = () => {
+    for (let i = 0; i < numHandles; i++) {
+      const x = handlePositions[i].x;
+      const y = handlePositions[i].y;
+      $('#handle-info' + i).html("handle" + i + ": (" + x.toFixed(2) + ", " + y.toFixed(2) + ")");
+    }
+  }
+
+  const setFormValues = () => {
+    for (let i = 0; i < numHandles; i++) {
+      const x = handlePositions[i].x;
+      const y = handlePositions[i].y;
+      $("#handle" + i + "_x").attr("value", x.toFixed(2));
+      $("#handle" + i + "_y").attr("value", y.toFixed(2));
+    }
+  }
+
+  for (let i = 0; i < numHandles; i++) {
+    $('#draggable-point' + i).draggable({
+      containment: 'parent',
+      scroll: false
+    });
+
+    $('#draggable-point' + i).on('drag', (event, ui) => {
+      const currentWidth = $('#canvas-container').width();
+      const currentHeight = $('#canvas-container').height();
+      const point = $('#draggable-point' + i);
+      handlePositions[i].x = (point.position().left + point.width() / 2) / currentWidth;
+      handlePositions[i].y = (point.position().top + point.height() / 2) / currentHeight;
+      drawAnnotation();
+      showHandlePositions();
+      setFormValues();
+    });
+  }
+
+  $(window).resize(() => {
+    setDimensions();
+    drawAnnotation();
+  });
+
+  setDimensions();
+  drawAnnotation();
+  showHandlePositions();
+  setFormValues();
+
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<main>
+
+  <h1>マスク位置調節</h1>
+
+  <div id="canvas-container">
+    <img id="face-image" src="media/{{ image_path }}">
+    <canvas id="canvas"></canvas>
+    <div class="draggable" id="draggable-point0"></div>
+    <div class="draggable" id="draggable-point1"></div>
+    <div class="draggable" id="draggable-point2"></div>
+    <div class="draggable" id="draggable-point3"></div>
+    <div class="draggable" id="draggable-point4"></div>
+    <div class="draggable" id="draggable-point5"></div>
+    <div class="draggable" id="draggable-point6"></div>
+    <div class="draggable" id="draggable-point7"></div>
+  </div>
+
+  <div class="section-container">
+    <p id="handle-info0"></p>
+    <p id="handle-info1"></p>
+    <p id="handle-info2"></p>
+    <p id="handle-info3"></p>
+    <p id="handle-info4"></p>
+    <p id="handle-info5"></p>
+    <p id="handle-info6"></p>
+    <p id="handle-info7"></p>
+  </div>
+
+  <div class="section-container">
+    <form method="POST" action="">
+      {% csrf_token %}
+      {% for pos in edge_positions %}
+      <input type="hidden" name="handle{{ forloop.counter0 }}_x" id="handle{{ forloop.counter0 }}_x" value="">
+      <input type="hidden" name="handle{{ forloop.counter0 }}_y" id="handle{{ forloop.counter0 }}_y" value="">
+      {% endfor %}
+      <button type="submit">次へ</button>
+    </form>
+    <a href="{% url 'index' %}">戻る</a>
+  </div>
+
+</main>
+{% endblock %}

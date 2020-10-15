@@ -1,0 +1,30 @@
+{% extends 'rm_mask/base.html' %}
+
+{% load static %}
+
+{% block title %}
+出力結果
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/result.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<main>
+
+  <h1>出力結果</h1>
+
+  <div class="section-container">
+    <img id="output-image" src="media/{{ output_path }}">
+  </div>
+
+  <div class="section-container">
+    <a href="{% url 'mask' %}">戻る</a>
+    <a href="{% url 'index' %}">トップへ</a>
+  </div>
+
+</main>
+
+{% endblock %}
