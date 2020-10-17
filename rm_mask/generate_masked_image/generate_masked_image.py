@@ -160,15 +160,23 @@ def generate_result_image(image_path, inpainted_image_path, crop_params_dict):
 
     '''背景画像をリサイズするやり方'''
 
-    resized_back_image[int(top_left[1]): int(top_left[1]) + 256,
-                       int(top_left[0]): int(top_left[0]) + 256] = inpainted_image
-
     print('インペイント画像のサイズ')
     print(inpainted_image.shape)
+    print('インペイント画像の左上')
+    print(top_left)
+    print('インペイントの右下')
+    bottom_right = [top_left[0]+256, top_left[1]+256]
+    print(bottom_right)
     print('小さい背景画像サイズ')
     print(resized_back_image.shape)
 
-    cv2.imwrite(final_result_path, resized_back_image)
+    if top_left[0] < 0 or top_left[1] < 0 or bottom_right[0] >= resized_back_image.shape[1] or bottom_right[1] >= resized_back_image.shape[0]:
+        cv2.imwrite(final_result_path, inpainted_image)
+    else:
+        resized_back_image[int(top_left[1]): int(top_left[1]) + 256,
+                           int(top_left[0]): int(top_left[0]) + 256] = inpainted_image
+
+        cv2.imwrite(final_result_path, resized_back_image)
 
     return final_result_path
     # return inpainted_image_pa
