@@ -28,12 +28,9 @@ $(window).load(() => {
   ];
 
   const setDimensions = () => {
-    const currentWidth = $('#canvas-container').width();
-    const currentHeight = currentWidth;
+    const currentWidth = $('#face-image').width();
+    const currentHeight = $('#face-image').height();
     $('#canvas-container').height(currentHeight);
-
-    $('#face-image').width(currentWidth);
-    $('#face-image').height(currentHeight);
 
     const ratio = window.devicePixelRatio;
     $('#canvas').attr('width', currentWidth * ratio);
