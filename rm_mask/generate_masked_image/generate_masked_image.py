@@ -149,7 +149,7 @@ def generate_masked_image(input_image_path, mask_points):
     # 画像を保存
     cv2.imwrite(masked_image_path, masked_image)
 
-    return masked_image_path
+    return masked_image_path, []
 
 
 if __name__ == "__main__":
