@@ -29,3 +29,7 @@
   background-color: #dfd;
   opacity: 0;
 }
+
+#info {
+  display: none;
+}
