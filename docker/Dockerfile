@@ -13,9 +13,8 @@ RUN cd /workspace \
     && mkdir ./rm_mask/inpainting/weights \
     && wget https://www.dropbox.com/s/30luxykt3jfrzlx/weights.zip?dl=0 -O ./rm_mask/inpainting/weights/weights.zip \
     && cd ./rm_mask/inpainting/weights/ \
-    && unzip ./weights.zip
-
-RUN cd /workspace/hackathon-imp/rm_mask/estimate_mask_edge_positions/RetinaFaceAntiCov/rcnn/cython \
+    && unzip ./weights.zip \
+    && cd /workspace/hackathon-imp/rm_mask/estimate_mask_edge_positions/RetinaFaceAntiCov/rcnn/cython \
     && python setup.py build_ext --inplace
 
 CMD ["/bin/bash"]
