@@ -3,7 +3,7 @@ from django.views import generic
 
 from .forms import PhotoForm
 from .generate_masked_image import generate_masked_image
-from .inpainting import Pix2PixModel, inpainting
+from .inpainting import Pix2PixModel
 
 import os
 
