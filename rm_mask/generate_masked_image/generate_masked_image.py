@@ -151,6 +151,9 @@ def generate_masked_image(input_image_path, mask_points):
 
     return masked_image_path, []
 
+def generate_result_image(image_path, inpainted_image_path, positions):
+    return inpainted_image_path
+
 
 if __name__ == "__main__":
     generate_masked_image(0, 0)
