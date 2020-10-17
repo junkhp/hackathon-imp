@@ -7,3 +7,6 @@ db.sqlite3
 /media
 
 .vscode/
+rm_mask/inpainting/weights/
+test_image/
+test.py
