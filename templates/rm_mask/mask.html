@@ -30,6 +30,32 @@ $(window).load(() => {
   const handleSize = 30;
 
   const setDimensions = () => {
+    // const currentWidth = $('#face-image').width();
+    // const currentHeight = $('#face-image').height();
+    // $('#canvas-container').height(currentHeight);
+
+    const windowWidth = $(window).width();
+    const windowHeight = $(window).height();
+
+    const imageNaturalWidth = $("#face-image").prop("naturalWidth");
+    const imageNaturalHeight = $("#face-image").prop("naturalHeight");
+
+    const initialWidth = $("#canvas-container").parent().width();
+    const initialHeight = initialWidth * imageNaturalHeight / imageNaturalWidth;
+
+    const thresholdHeight = windowHeight * 0.8;
+
+    if (initialHeight > thresholdHeight) {
+      const convertedWidth = initialWidth * thresholdHeight / initialHeight;
+      if (convertedWidth >= 200) {
+        $('#canvas-container').width(convertedWidth);
+      } else {
+        $('#canvas-container').width(initialWidth);
+      }
+    } else {
+      $('#canvas-container').width(initialWidth);
+    }
+    
     const currentWidth = $('#face-image').width();
     const currentHeight = $('#face-image').height();
     $('#canvas-container').height(currentHeight);
