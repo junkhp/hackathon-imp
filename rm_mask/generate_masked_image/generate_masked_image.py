@@ -170,8 +170,8 @@ def generate_result_image(image_path, inpainted_image_path, crop_params_dict):
 
     cv2.imwrite(final_result_path, resized_back_image)
 
-    # return final_result_path
-    return inpainted_image_path
+    return final_result_path
+    # return inpainted_image_pa
 
 # if __name__ == "__main__":
 #     # generate_masked_image(0, 0)
