@@ -7,6 +7,7 @@ from .inpainting import Pix2PixModel
 
 import os
 
+from .estimate_mask_edge_positions.estimate_mask_edge_positions import estimate_mask_edge_positions
 
 def IndexPageView(request):
     template_name = 'rm_mask/index.html'
@@ -25,16 +26,19 @@ def IndexPageView(request):
             form.save()
 
             input_image_path = os.path.join('media', form.instance.image.name)
-            edge_positions = [
-              {'x': 0.50, 'y': 0.40},
-              {'x': 0.30, 'y': 0.60},
-              {'x': 0.30, 'y': 0.75},
-              {'x': 0.35, 'y': 0.85},
-              {'x': 0.50, 'y': 0.90},
-              {'x': 0.65, 'y': 0.85},
-              {'x': 0.70, 'y': 0.75},
-              {'x': 0.70, 'y': 0.60},
-            ]
+            edge_positions = estimate_mask_edge_positions(input_image_path)
+
+            if edge_positions is None:
+                edge_positions = [
+                {'x': 0.50, 'y': 0.40},
+                {'x': 0.30, 'y': 0.60},
+                {'x': 0.30, 'y': 0.75},
+                {'x': 0.35, 'y': 0.85},
+                {'x': 0.50, 'y': 0.90},
+                {'x': 0.65, 'y': 0.85},
+                {'x': 0.70, 'y': 0.75},
+                {'x': 0.70, 'y': 0.60},
+                ]
 
             request.session['input_image_path'] = input_image_path
             request.session['edge_positions'] = edge_positions
