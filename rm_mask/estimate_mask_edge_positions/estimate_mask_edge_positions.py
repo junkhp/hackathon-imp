@@ -88,7 +88,7 @@ def kouten(a1, b1, a2, b2):
     """
     if a1 == a2:
         a1 += 0.001
-        
+
     x = -(b1-b2)/(a1-a2)
     y = a1 * x + b1
     return x, y
@@ -196,6 +196,7 @@ def estimate_mask_contour(img):
 
     else:
         # 顔の検出に失敗するとNoneを返す
+        print("failed to detect faces")
         return None
 
 
@@ -216,7 +217,10 @@ def estimate_mask_edge_positions(img_path):
 
     img = cv2.imread(img_path)
     mask_contour = estimate_mask_contour(img)
-
+    
+    if mask_contour is None:
+        return None
+        
     h, w, *_ = img.shape
     mask_edge_positions = contour_to_edge_positions(mask_contour, (h, w))
 
