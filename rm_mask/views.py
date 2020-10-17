@@ -74,7 +74,9 @@ def MaskPageView(request):
 
             image_path = request.session['input_image_path']
             masked_image_path = generate_masked_image(image_path, edge_positions)
-            inpainted_image_path = Pix2PixModel(masked_image_path)
+            p2p = Pix2PixModel(masked_image_path)
+            inpainted_image_path = p2p.save_path()
+
 
             request.session['edge_positions'] = edge_positions
             request.session['output_image_path'] = inpainted_image_path
