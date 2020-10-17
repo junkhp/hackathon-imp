@@ -94,6 +94,7 @@ def ResultPageView(request):
 
     if 'output_image_path' in request.session:
         params = {
+            'input_image_path': request.session['input_image_path'],
             'output_image_path': request.session['output_image_path'],
         }
         return render(request, template_name, params)
