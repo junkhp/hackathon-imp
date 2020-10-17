@@ -7,3 +7,7 @@ db.sqlite3
 /media
 
 .vscode/
+*.DS_Store
+oshibavenv
+._README.md
+oshiba_test_images/
