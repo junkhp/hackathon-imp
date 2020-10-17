@@ -2,21 +2,23 @@ from django.shortcuts import render, redirect
 from django.views import generic
 
 from .forms import PhotoForm
-from .generate_masked_image import generate_masked_image, generate_result_image
+from .generate_masked_image import generate_masked_image
+from .generate_masked_image.generate_masked_image import generate_result_image
 from .inpainting import Pix2PixModel
 
 import os
 
 from .estimate_mask_edge_positions.estimate_mask_edge_positions import estimate_mask_edge_positions
 
+
 def IndexPageView(request):
     template_name = 'rm_mask/index.html'
 
     if request.method == 'GET':
-        request.session.clear()
+        request.session.flush()
         params = {
-          'form': PhotoForm(),
-          'message': '',
+            'form': PhotoForm(),
+            'message': '',
         }
         return render(request, template_name, params)
 
@@ -30,14 +32,14 @@ def IndexPageView(request):
 
             if edge_positions is None:
                 edge_positions = [
-                {'x': 0.50, 'y': 0.40},
-                {'x': 0.30, 'y': 0.60},
-                {'x': 0.30, 'y': 0.75},
-                {'x': 0.35, 'y': 0.85},
-                {'x': 0.50, 'y': 0.90},
-                {'x': 0.65, 'y': 0.85},
-                {'x': 0.70, 'y': 0.75},
-                {'x': 0.70, 'y': 0.60},
+                    {'x': 0.50, 'y': 0.40},
+                    {'x': 0.30, 'y': 0.60},
+                    {'x': 0.30, 'y': 0.75},
+                    {'x': 0.35, 'y': 0.85},
+                    {'x': 0.50, 'y': 0.90},
+                    {'x': 0.65, 'y': 0.85},
+                    {'x': 0.70, 'y': 0.75},
+                    {'x': 0.70, 'y': 0.60},
                 ]
 
             request.session['input_image_path'] = input_image_path
@@ -45,8 +47,8 @@ def IndexPageView(request):
             return redirect('mask')
         else:
             params = {
-              'form': PhotoForm(),
-              'message': 'Error!!',
+                'form': PhotoForm(),
+                'message': 'Error!!',
             }
             return render(request, template_name, params)
 
@@ -57,8 +59,8 @@ def MaskPageView(request):
     if request.method == 'GET':
         if 'input_image_path' in request.session and 'edge_positions' in request.session:
             params = {
-              'input_image_path': request.session['input_image_path'],
-              'edge_positions': request.session['edge_positions'],
+                'input_image_path': request.session['input_image_path'],
+                'edge_positions': request.session['edge_positions'],
             }
             return render(request, template_name, params)
         else:
@@ -77,8 +79,8 @@ def MaskPageView(request):
             p2p = Pix2PixModel(masked_image_path)
             inpainted_image_path = p2p.get_path_to_inpainted_image()
 
-            # result_path = generate_result_image(image_path, inpainted_image_path, positions)
-            result_path = inpainted_image_path
+            result_path = generate_result_image(image_path, inpainted_image_path, positions)
+            print(result_path)
 
             request.session['edge_positions'] = edge_positions
             request.session['output_image_path'] = result_path
@@ -92,7 +94,7 @@ def ResultPageView(request):
 
     if 'output_image_path' in request.session:
         params = {
-          'output_image_path': request.session['output_image_path'],
+            'output_image_path': request.session['output_image_path'],
         }
         return render(request, template_name, params)
     else:
