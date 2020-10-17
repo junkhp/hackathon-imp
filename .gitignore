@@ -7,7 +7,12 @@ db.sqlite3
 /media
 
 .vscode/
+
 *.DS_Store
 oshibavenv
 ._README.md
 oshiba_test_images/
+
+rm_mask/inpainting/weights/
+test_image/
+test.py

@@ -3,3 +3,11 @@ Django==2.2.2
 Pillow==8.0.0
 pytz==2020.1
 sqlparse==0.4.1
+
+### RetinaFace
+mxnet
+Cython
+
+torch==1.6.0
+torchvision==0.7.0
+
