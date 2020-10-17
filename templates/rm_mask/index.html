@@ -6,6 +6,10 @@
 トップページ
 {% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/button.css' %}">
+{% endblock %}
+
 {% block content %}
 <main>
 
@@ -16,7 +20,7 @@
     <form method="POST" action="" enctype="multipart/form-data">
       {% csrf_token %}
       <p>{{ form.image }}</p>
-      <button type="submit">次へ</button>
+      <button type="submit" class="next-btn">次へ</button>
     </form>
   </div>
 
