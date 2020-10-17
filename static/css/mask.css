@@ -24,8 +24,6 @@
 
 #canvas-container .draggable {
   position: absolute;
-  width: 30px;
-  height: 30px;
   background-color: #dfd;
   opacity: 0;
 }
