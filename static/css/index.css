@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+#preview {
+  max-width: 100%;
+}
+
+#id_image {
+  display: none;
+}
