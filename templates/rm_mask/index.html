@@ -21,8 +21,8 @@
       if ($('#id_image').val() !== '') {
         if (!/\.(jpg|jpeg|png|gif|JPG|JPEG|PNG|GIF)$/.test(file.name) || !/(jpg|jpeg|png|gif)$/.test(file.type)) {
           alert('画像を添付してください (JPG, PNG, GIF)');
-        } else if (1048576 < file.size) {
-          alert('1MB以下の画像を添付してください。');
+        // } else if (1048576 < file.size) {
+        //   alert('1MB以下の画像を添付してください。');
         } else {
           if (window.FileReader) {
             const reader = new FileReader();
