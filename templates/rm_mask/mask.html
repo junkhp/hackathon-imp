@@ -8,6 +8,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/mask.css' %}">
+<link rel="stylesheet" href="{% static 'css/button.css' %}">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
@@ -166,9 +167,9 @@ $(window).load(() => {
       <input type="hidden" name="handle{{ forloop.counter0 }}_x" id="handle{{ forloop.counter0 }}_x" value="">
       <input type="hidden" name="handle{{ forloop.counter0 }}_y" id="handle{{ forloop.counter0 }}_y" value="">
       {% endfor %}
-      <button type="submit">次へ</button>
+      <button type="submit" class="next-btn">次へ</button>
     </form>
-    <a href="{% url 'index' %}">戻る</a>
+    <a href="{% url 'index' %}" class="prev-btn">戻る</a>
   </div>
 
 </main>

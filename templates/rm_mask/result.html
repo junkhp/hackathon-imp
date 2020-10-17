@@ -8,6 +8,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/result.css' %}">
+<link rel="stylesheet" href="{% static 'css/button.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -21,8 +22,8 @@
   </div>
 
   <div class="section-container">
-    <a href="{% url 'mask' %}">戻る</a>
-    <a href="{% url 'index' %}">トップへ</a>
+    <a href="{% url 'mask' %}" class="prev-btn">戻る</a>
+    <a href="{% url 'index' %}" class="prev-btn">トップへ</a>
   </div>
 
 </main>
