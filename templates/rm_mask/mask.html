@@ -27,6 +27,8 @@ $(window).load(() => {
     { x: {{ edge_positions.7.x }}, y: {{ edge_positions.7.y }} },
   ];
 
+  const handleSize = 30;
+
   const setDimensions = () => {
     const currentWidth = $('#face-image').width();
     const currentHeight = $('#face-image').height();
@@ -71,7 +73,7 @@ $(window).load(() => {
       const cy = handlePositions[i].y * canvasHeight;
 
       ctx.beginPath();
-      ctx.arc(cx, cy, 10, 0, 2 * Math.PI, false);
+      ctx.arc(cx, cy, 6, 0, 2 * Math.PI, false);
       ctx.fillStyle = 'rgb(255, 255, 255)';
       ctx.fill();
       ctx.strokeStyle = 'rgb(0, 0, 0)';
@@ -98,14 +100,29 @@ $(window).load(() => {
 
   for (let i = 0; i < numHandles; i++) {
     $('#draggable-point' + i).draggable({
-      containment: 'parent',
+      // containment: 'parent',
       scroll: false
     });
+
+    $('#draggable-point' + i).css({width: handleSize, height: handleSize})
 
     $('#draggable-point' + i).on('drag', (event, ui) => {
       const currentWidth = $('#canvas-container').width();
       const currentHeight = $('#canvas-container').height();
       const point = $('#draggable-point' + i);
+
+      if (point.position().left <= -handleSize / 2) {
+        point.css({'left': -handleSize / 2});
+      } else if (point.position().left >= currentWidth - handleSize / 2) {
+        point.css({'left': currentWidth - handleSize / 2});
+      }
+
+      if (point.position().top <= -handleSize / 2) {
+        point.css({'top': -handleSize / 2});
+      } else if (point.position().top >= currentHeight - handleSize / 2) {
+        point.css({'top': currentHeight - handleSize / 2});
+      }
+
       handlePositions[i].x = (point.position().left + point.width() / 2) / currentWidth;
       handlePositions[i].y = (point.position().top + point.height() / 2) / currentHeight;
       drawAnnotation();
@@ -146,7 +163,7 @@ $(window).load(() => {
     <div class="draggable" id="draggable-point7"></div>
   </div>
 
-  <div class="section-container">
+  <div class="section-container" id="info">
     <p id="handle-info0"></p>
     <p id="handle-info1"></p>
     <p id="handle-info2"></p>
