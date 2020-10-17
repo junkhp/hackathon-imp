@@ -53,6 +53,9 @@ def katamuki(p, q):
     """
     dx = p[0]-q[0]
     dy = p[1]-q[1]
+
+    if dx == 0:
+        dx = 0.001
     a = dy/dx
     return a
 
@@ -72,6 +75,9 @@ def chokkou(z, p):
     """
     x, y = p
 
+    if z == 0:
+        z = 0.001
+
     a = -1/z
     b = y - a*x
     return a, b
@@ -80,6 +86,9 @@ def kouten(a1, b1, a2, b2):
     """
     直線の交点を返す．
     """
+    if a1 == a2:
+        a1 += 0.001
+        
     x = -(b1-b2)/(a1-a2)
     y = a1 * x + b1
     return x, y

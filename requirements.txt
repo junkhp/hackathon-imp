@@ -5,5 +5,5 @@ pytz==2020.1
 sqlparse==0.4.1
 
 ### RetinaFace
-mxnet==1.6.0
-Cython==0.29
+mxnet
+Cython

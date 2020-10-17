@@ -15,10 +15,10 @@
 3. RetinaFaceの動作に必要なライブラリのインストール
 
 ```
-pip install mxnet, cython
+pip install mxnet cython
 ```
 
-4. cython ディレクトリに移動し，cython関係のモジュールをコンパイル (うまくコンパイルできるように祈ろう)
+4. RetinaFaceAnticov/rcnn/cython ディレクトリに移動し，cython関係のモジュールをコンパイル (うまくコンパイルできるように祈ろう)
 ```
 python setup.py build_ext --inplace
 ```
