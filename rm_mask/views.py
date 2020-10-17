@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import generic
 
 from .forms import PhotoForm
-from .generate_masked_image import generate_masked_image
+from .generate_masked_image import generate_masked_image, generate_result_image
 from .inpainting import Pix2PixModel
 
 import os
@@ -73,12 +73,14 @@ def MaskPageView(request):
                 edge_positions.append({'x': pos_x, 'y': pos_y})
 
             image_path = request.session['input_image_path']
-            masked_image_path = generate_masked_image(image_path, edge_positions)
+            masked_image_path, positions = generate_masked_image(image_path, edge_positions)
             p2p = Pix2PixModel(masked_image_path)
             inpainted_image_path = p2p.get_path_to_inpainted_image()
 
+            result_path = generate_result_image(image_path, inpainted_image_path, positions)
+
             request.session['edge_positions'] = edge_positions
-            request.session['output_image_path'] = inpainted_image_path
+            request.session['output_image_path'] = result_path
             return redirect('result')
         else:
             return redirect('index')
