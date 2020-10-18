@@ -6,17 +6,61 @@
 トップページ
 {% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+<link rel="stylesheet" href="{% static 'css/button.css' %}">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script>
+  $(() => {
+    $("#preview").css({display: 'none'});
+
+    $("#id_image").change(() => {
+      $("#preview").css({display: 'none'});
+      const file = $('#id_image').prop('files')[0];
+
+      if ($('#id_image').val() !== '') {
+        if (!/\.(jpg|jpeg|png|gif|JPG|JPEG|PNG|GIF)$/.test(file.name) || !/(jpg|jpeg|png|gif)$/.test(file.type)) {
+          alert('画像を添付してください (JPG, PNG, GIF)');
+        // } else if (1048576 < file.size) {
+        //   alert('1MB以下の画像を添付してください。');
+        } else {
+          if (window.FileReader) {
+            const reader = new FileReader();
+            reader.onload = () => {
+              $('#preview').attr('src', reader.result);
+              $("#preview").css({display: 'inline'});
+            }
+            reader.readAsDataURL(file);
+          }
+
+          return false;
+        }
+      }
+
+      $('#id_image').val('');
+    })
+  });
+</script>
+{% endblock %}
+
 {% block content %}
 <main>
 
   <h1>トップページ</h1>
 
   <div class="section-container">
-    <p>画像をアップロードしてください</p>
+    <p>マスクをつけた写真をアップロードするとマスクを外してくれます！</p>
+
     <form method="POST" action="" enctype="multipart/form-data">
       {% csrf_token %}
-      <p>{{ form.image }}</p>
-      <button type="submit">次へ</button>
+      <label for="id_image" class="file-btn">
+        ファイルを選択
+        <p>{{ form.image }}</p>
+      </label>
+      <button type="submit" class="next-btn">次へ</button>
+      <br>
+      <img src="#" id="preview">
+      <br>
     </form>
   </div>
 

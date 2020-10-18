@@ -18,12 +18,16 @@
 
 #face-image {
   position: absolute;
+  width: 100%;
+  height: auto;
 }
 
 #canvas-container .draggable {
   position: absolute;
-  width: 30px;
-  height: 30px;
   background-color: #dfd;
   opacity: 0;
+}
+
+#info {
+  display: none;
 }

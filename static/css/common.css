@@ -10,6 +10,7 @@
   min-width: 320px;
   min-height: 100vh;
   background: #ddf;
+  overflow: hidden;
   font-size: 100%;
   font-family: sans-serif;
 }

@@ -8,6 +8,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/mask.css' %}">
+<link rel="stylesheet" href="{% static 'css/button.css' %}">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
@@ -26,13 +27,38 @@ $(window).load(() => {
     { x: {{ edge_positions.7.x }}, y: {{ edge_positions.7.y }} },
   ];
 
-  const setDimensions = () => {
-    const currentWidth = $('#canvas-container').width();
-    const currentHeight = currentWidth;
-    $('#canvas-container').height(currentHeight);
+  const handleSize = 30;
 
-    $('#face-image').width(currentWidth);
-    $('#face-image').height(currentHeight);
+  const setDimensions = () => {
+    // const currentWidth = $('#face-image').width();
+    // const currentHeight = $('#face-image').height();
+    // $('#canvas-container').height(currentHeight);
+
+    const windowWidth = $(window).width();
+    const windowHeight = $(window).height();
+
+    const imageNaturalWidth = $("#face-image").prop("naturalWidth");
+    const imageNaturalHeight = $("#face-image").prop("naturalHeight");
+
+    const initialWidth = $("#canvas-container").parent().width();
+    const initialHeight = initialWidth * imageNaturalHeight / imageNaturalWidth;
+
+    const thresholdHeight = windowHeight * 0.8;
+
+    if (initialHeight > thresholdHeight) {
+      const convertedWidth = initialWidth * thresholdHeight / initialHeight;
+      if (convertedWidth >= 200) {
+        $('#canvas-container').width(convertedWidth);
+      } else {
+        $('#canvas-container').width(initialWidth);
+      }
+    } else {
+      $('#canvas-container').width(initialWidth);
+    }
+    
+    const currentWidth = $('#face-image').width();
+    const currentHeight = $('#face-image').height();
+    $('#canvas-container').height(currentHeight);
 
     const ratio = window.devicePixelRatio;
     $('#canvas').attr('width', currentWidth * ratio);
@@ -73,7 +99,7 @@ $(window).load(() => {
       const cy = handlePositions[i].y * canvasHeight;
 
       ctx.beginPath();
-      ctx.arc(cx, cy, 10, 0, 2 * Math.PI, false);
+      ctx.arc(cx, cy, 6, 0, 2 * Math.PI, false);
       ctx.fillStyle = 'rgb(255, 255, 255)';
       ctx.fill();
       ctx.strokeStyle = 'rgb(0, 0, 0)';
@@ -100,14 +126,29 @@ $(window).load(() => {
 
   for (let i = 0; i < numHandles; i++) {
     $('#draggable-point' + i).draggable({
-      containment: 'parent',
+      // containment: 'parent',
       scroll: false
     });
+
+    $('#draggable-point' + i).css({width: handleSize, height: handleSize})
 
     $('#draggable-point' + i).on('drag', (event, ui) => {
       const currentWidth = $('#canvas-container').width();
       const currentHeight = $('#canvas-container').height();
       const point = $('#draggable-point' + i);
+
+      if (point.position().left <= -handleSize / 2) {
+        point.css({'left': -handleSize / 2});
+      } else if (point.position().left >= currentWidth - handleSize / 2) {
+        point.css({'left': currentWidth - handleSize / 2});
+      }
+
+      if (point.position().top <= -handleSize / 2) {
+        point.css({'top': -handleSize / 2});
+      } else if (point.position().top >= currentHeight - handleSize / 2) {
+        point.css({'top': currentHeight - handleSize / 2});
+      }
+
       handlePositions[i].x = (point.position().left + point.width() / 2) / currentWidth;
       handlePositions[i].y = (point.position().top + point.height() / 2) / currentHeight;
       drawAnnotation();
@@ -135,8 +176,12 @@ $(window).load(() => {
 
   <h1>マスク位置調節</h1>
 
+  <div class="section-container">
+    <p>青い多角形がマスク全体を覆うように調節してください</p>
+  </div>
+
   <div id="canvas-container">
-    <img id="face-image" src="media/{{ image_path }}">
+    <img id="face-image" src="{{ input_image_path }}">
     <canvas id="canvas"></canvas>
     <div class="draggable" id="draggable-point0"></div>
     <div class="draggable" id="draggable-point1"></div>
@@ -148,7 +193,7 @@ $(window).load(() => {
     <div class="draggable" id="draggable-point7"></div>
   </div>
 
-  <div class="section-container">
+  <div class="section-container" id="info">
     <p id="handle-info0"></p>
     <p id="handle-info1"></p>
     <p id="handle-info2"></p>
@@ -166,9 +211,9 @@ $(window).load(() => {
       <input type="hidden" name="handle{{ forloop.counter0 }}_x" id="handle{{ forloop.counter0 }}_x" value="">
       <input type="hidden" name="handle{{ forloop.counter0 }}_y" id="handle{{ forloop.counter0 }}_y" value="">
       {% endfor %}
-      <button type="submit">次へ</button>
+      <button type="submit" class="next-btn">次へ</button>
     </form>
-    <a href="{% url 'index' %}">戻る</a>
+    <a href="{% url 'index' %}" class="prev-btn">戻る</a>
   </div>
 
 </main>
