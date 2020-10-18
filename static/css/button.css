@@ -38,3 +38,29 @@
   font-size: 100%;
   cursor: pointer;
 }
+
+.green-btn {
+  display: inline-block;
+  margin: 0.5em;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  background: #383;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  font-size: 100%;
+  cursor: pointer;
+}
+
+.orange-btn{
+  display: inline-block;
+  margin: 0.5em;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  background: #d60;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  font-size: 100%;
+  cursor: pointer;
+}

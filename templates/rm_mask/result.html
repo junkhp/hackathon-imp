@@ -20,10 +20,12 @@ $(window).load(() => {
     if (choice == 'output') {
       choice = 'input';
       $("#switch-img-btn").html("変換後の画像を見る");
+      $("#switch-img-btn").attr("class", "orange-btn");
       $("#output-image").attr("src", "{{ input_image_path }}");
     } else if (choice == 'input') {
       choice = 'output';
       $("#switch-img-btn").html("変換前の画像を見る");
+      $("#switch-img-btn").attr("class", "green-btn");
       $("#output-image").attr("src", "{{ output_image_path }}");
     }
    });
@@ -42,7 +44,7 @@ $(window).load(() => {
   </div>
 
   <div class="section-container">
-    <button class="next-btn" id="switch-img-btn">変換前の画像を見る</button>
+    <button class="green-btn" id="switch-img-btn">変換前の画像を見る</button>
   </div>
 
   <div class="section-container">
