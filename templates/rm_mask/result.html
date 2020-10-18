@@ -11,8 +11,11 @@
 <link rel="stylesheet" href="{% static 'css/button.css' %}">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script>
-$(() => {
+$(window).load(() => {
   let choice = 'output';
+  const imageWidth = $("#output-image").width()
+  $("#output-image").css({width: imageWidth})
+
   $("#switch-img-btn").on('click', () => {
     if (choice == 'output') {
       choice = 'input';
