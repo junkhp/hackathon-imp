@@ -1,71 +1,30 @@
-# hackathon-imp
+# プロジェクト名
 
-サポーターズ主催のハッカソン用プロジェクト．
+2020年10月17~18日に開催されたサポーターズ主催のオータムハッカソン用プロジェクト
 
+## アプリ概要
 
-## Commands
+2020年10月現在では，新型コロナウイルスの影響で外出時はマスクの着用が必須な世の中になってしまっています．感染対策をしながら旅行に行ったり，少人数の友達をランチをしたりして，その時の思い出をカメラに収めたとしてもマスクによって顔が半分も隠れてしまうなんてことがよくあるのではないでしょうか．
 
-### データベースの構築
+そこで今回は，**マスクをした人の画像からマスクを取り除き，口元を表現するアプリ**を作成しました！  
+このアプリを使用して，思い出とその写真をぜひマスクから離れて保存しましょう！
 
-```
-python manage.py migrate
-```
+## 使い方
+ローカルのdocker上で環境を立ち上げる方法のみになります．  
+今後，デプロイする予定です．
 
-### サーバー立ち上げ
-```
-python manage.py runserver
-```
+### dockerを使用する場合
 
-
-## Code
-
-ビューは `rm_mask/view.py` 内で定義されている． それぞれの内容は以下の通りである．
-
-- `IndexPageView`
-  - 説明: 最初のページ．画像をアップロードする．
-  - URL: /
-  - POST の動作: 顔画像からマスク領域を推定．
-
-
-- `MaskPageView`
-  - 説明: 顔画像のマスク部分を調整するページ．
-  - URL: /mask
-  - POST の動作: マスク部分を白く塗ったあと画像変換．
-  
-
-- `ResultPageView`
-  - 説明: 出力結果を表示するページ．
-  - URL: /result
-
-## 追加機能  
-ファイル名と関数名を明示的にするための一覧  
-もし，/rm_mask 以下にdirectoryを作りたい場合は，そのようにしてくれてもOK  
-（むしろ，その方がよいかも）
-- generate_masked_image.py  
-  - generate_masked_image()  
-    マスクの座標からマスク部分を白くした画像を保存し，その画像のパスを返す  
-    （もし可能なら，ここに処理の流れを簡単に書いておくと他の人にもわかりやすいかも）
-    ~~~
-    args:
-      image_path: 変換対象の画像が保存されている絶対パス
-      edge_positions: マスクの境界を示す座標
-    return:
-      masked_image_path: マスク部分を白くした画像の絶対パス
-    ~~~
-- inpainting.py
-  - inpaint_masked_image()  
-    マスク部分を白くした画像をpix2pixでinpaintingし，その画像のパスを返す
-    ~~~
-    args:
-      masked_image_path: マスク部分を白くした画像の絶対パス
-    return:
-      inpainted_image_path: マスク部分を人の口元に変換した画像の絶対パス
-    ~~~
-
-## Sessions
-
-ウェブでは基本的にリクエストをまたいで変数の値を共有することはできない．しかし，セッションを使うとユーザーの入力などを保存しておくことができる．
-
-- `request.session['input_image_path']`: 入力画像の保存先
-- `request.session['edge_positions']`: マスク領域の頂点の座標
-- `request.session['output_image_path']`: 出力画像の保存先
+- 環境構築済みのイメージをpullして，サーバーを起動する
+  ```
+  docker run -p 8099:8099 nh122112/rm-mask:v2.0 \
+    /bin/bash /workspace/hackathon-imp/script/runserver.sh
+  ```
+  run後，ローカルのwebブラウザで `localhost:8099` にアクセス
+- イメージのbuildも可能です．
+  ```
+  cd docker
+  docker build ./ -t rm-mask:latest
+  docker run -p 8099:8099 rm-mask:latest \
+    /bin/bash /workspace/hackathon-imp/script/runserver.sh
+  ```
