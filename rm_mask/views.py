@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import generic
 
 from .forms import PhotoForm
+from .preprocessing.generate_small_image import generate_small_image
 from .generate_masked_image import generate_masked_image
 from .generate_masked_image.generate_masked_image import generate_result_image
 from .inpainting import Pix2PixModel
@@ -27,8 +28,10 @@ def IndexPageView(request):
         if form.is_valid():
             form.save()
 
-            input_image_path = os.path.join('media', form.instance.image.name)
-            edge_positions = estimate_mask_edge_positions(input_image_path)
+            uploaded_image_path = os.path.join('media', form.instance.image.name)
+            small_image_path = generate_small_image(uploaded_image_path)
+
+            edge_positions = estimate_mask_edge_positions(small_image_path)
 
             if edge_positions is None:
                 edge_positions = [
@@ -42,7 +45,7 @@ def IndexPageView(request):
                     {'x': 0.70, 'y': 0.60},
                 ]
 
-            request.session['input_image_path'] = input_image_path
+            request.session['input_image_path'] = small_image_path
             request.session['edge_positions'] = edge_positions
             return redirect('mask')
         else:
