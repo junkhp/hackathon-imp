@@ -20,12 +20,14 @@ $(window).load(() => {
     if (choice == 'output') {
       choice = 'input';
       $("#switch-img-btn").html("変換後の画像を見る");
-      $("#switch-img-btn").attr("class", "orange-btn");
+      $("#switch-img-btn").removeClass("green-btn");
+      $("#switch-img-btn").addClass("orange-btn");
       $("#output-image").attr("src", "{{ input_image_path }}");
     } else if (choice == 'input') {
       choice = 'output';
       $("#switch-img-btn").html("変換前の画像を見る");
-      $("#switch-img-btn").attr("class", "green-btn");
+      $("#switch-img-btn").removeClass("orange-btn")
+      $("#switch-img-btn").addClass("green-btn");
       $("#output-image").attr("src", "{{ output_image_path }}");
     }
    });
